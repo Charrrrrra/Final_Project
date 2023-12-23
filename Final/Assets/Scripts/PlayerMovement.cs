@@ -14,7 +14,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool Is_A_Pressed = false;
     private bool Is_D_Pressed = false;
-    private Animator animator;
+    public Animator animator;
+
+    public bool can_walk;
 
     void Start()
     {
@@ -28,13 +30,13 @@ public class PlayerMovement : MonoBehaviour
         moveDirection.Normalize(); // 归一化向量
 
         if (currentSpeed == 0) {
-            currentSpeed = maxSpeed * 0.1f; // 初始速度设为最大速度的10%
+            currentSpeed = maxSpeed * 0.3f; // 初始速度设为最大速度的10%
             return;
         }
         else if((currentSpeed += maxSpeed * 0.2f) > maxSpeed) {
             currentSpeed = maxSpeed;
             currentSpeed = Mathf.Clamp(currentSpeed, 0.0f, maxSpeed);
-            // Debug.Log(currentSpeed);
+            Debug.Log(currentSpeed);
             return;
         }
         else {
@@ -45,9 +47,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void Stop_Moving() {
+        animator.SetBool("Walk", false);
+        Is_A_Pressed = false;
+        Is_D_Pressed = false;
+        currentSpeed = 0.0f;
+        rb.velocity = Vector3.zero; // 确保速度为零
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+        if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) && can_walk)
         {
             if (Input.GetKeyDown(KeyCode.A) && Is_A_Pressed == false)
             {
@@ -66,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(currentSpeed) > 0.0f)
         {
             animator.SetBool("Walk", true);
-            animator.speed = currentSpeed * 0.1f + 0.5f;
+            // animator.speed = Mathf.Abs(currentSpeed * 0.1f) + 0.3f;
             // Debug.Log(currentSpeed);
             // 停止按键后，逐渐减速
             currentSpeed = currentSpeed * stopForceMultiplier; 
@@ -76,14 +86,9 @@ public class PlayerMovement : MonoBehaviour
 
             rb.velocity = moveDirection * currentSpeed;
 
-            // 如果速度接近零，停止移动
-            if (currentSpeed < 0.1f)
+            if (Mathf.Abs(currentSpeed) < 0.5f)
             {
-                animator.SetBool("Walk", false);
-                Is_A_Pressed = false;
-                Is_D_Pressed = false;
-                currentSpeed = 0.0f;
-                rb.velocity = Vector3.zero; // 确保速度为零
+                Stop_Moving();
             }
         }
 
