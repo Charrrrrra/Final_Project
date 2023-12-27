@@ -23,6 +23,7 @@ public class HitScript : MonoBehaviour
             my_player.can_walk = false;
             my_mouse.can_mouse_move = false;
             my_player.animator.Play("Fallback");
+            my_player.animator.speed = 1.0f;
             StartCoroutine(SetBoolAfterDelay(3.0f));
             my_player.Stop_Moving();
         }
@@ -32,6 +33,7 @@ public class HitScript : MonoBehaviour
             my_player.can_walk = false;
             my_mouse.can_mouse_move = false;
             Debug.Log("You fall!");
+            my_player.animator.speed = 1.0f;
             StartCoroutine(SetBoolAfterDelay(2.0f));
             my_player.Stop_Moving();
         }

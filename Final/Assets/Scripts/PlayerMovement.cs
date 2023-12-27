@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
 
     public bool can_walk;
+    private bool Is_walking;
 
     void Start()
     {
@@ -55,6 +56,29 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector3.zero; // 确保速度为零
     }
 
+    void FixedUpdate() {
+        if (Mathf.Abs(currentSpeed) > 0.0f)
+        {
+            animator.SetBool("Walk", true);
+            if (can_walk) {
+                animator.speed = Mathf.Abs(currentSpeed * 0.1f) + 0.3f;
+            }
+            // Debug.Log(currentSpeed);
+            // 停止按键后，逐渐减速
+            currentSpeed = currentSpeed * stopForceMultiplier; 
+
+            // 限制速度在合理范围内
+            currentSpeed = Mathf.Clamp(currentSpeed, 0.0f, maxSpeed);
+
+            rb.velocity = moveDirection * currentSpeed;
+
+            if (Mathf.Abs(currentSpeed) < 0.5f)
+            {
+                Stop_Moving();
+            }
+        }
+    }
+
     void Update()
     {
         if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) && can_walk)
@@ -73,26 +97,25 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         
-        if (Mathf.Abs(currentSpeed) > 0.0f)
-        {
-            animator.SetBool("Walk", true);
-            // animator.speed = Mathf.Abs(currentSpeed * 0.1f) + 0.3f;
-            // Debug.Log(currentSpeed);
-            // 停止按键后，逐渐减速
-            currentSpeed = currentSpeed * stopForceMultiplier; 
+        // if (Mathf.Abs(currentSpeed) > 0.0f)
+        // {
+        //     animator.SetBool("Walk", true);
+        //     if (can_walk) {
+        //         animator.speed = Mathf.Abs(currentSpeed * 0.1f) + 0.3f;
+        //     }
+        //     // Debug.Log(currentSpeed);
+        //     // 停止按键后，逐渐减速
+        //     currentSpeed = currentSpeed * stopForceMultiplier; 
 
-            // 限制速度在合理范围内
-            currentSpeed = Mathf.Clamp(currentSpeed, 0.0f, maxSpeed);
+        //     // 限制速度在合理范围内
+        //     currentSpeed = Mathf.Clamp(currentSpeed, 0.0f, maxSpeed);
 
-            rb.velocity = moveDirection * currentSpeed;
+        //     rb.velocity = moveDirection * currentSpeed;
 
-            if (Mathf.Abs(currentSpeed) < 0.5f)
-            {
-                Stop_Moving();
-            }
-        }
-
-        
-
+        //     if (Mathf.Abs(currentSpeed) < 0.5f)
+        //     {
+        //         Stop_Moving();
+        //     }
+        // }
     }
 }

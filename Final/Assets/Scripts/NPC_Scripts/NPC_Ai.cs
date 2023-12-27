@@ -16,18 +16,25 @@ public class NPC_Ai : MonoBehaviour
     int randNum, randNum2;
     public int destinationAmount;
     public Vector3 rayCasOffset;
+    public bool is_scared;
 
     void Start() {
         walking = true;
         randNum = Random.Range(0, destinationAmount);
         currentDest = destinations[randNum];
+        is_scared = false;
     }
 
     void Update() {
         Vector3 direction = (player.position - transform.position).normalized;
         RaycastHit hit;
+        Vector3 NPCforward = transform.forward;
+        // Vector3 startPoint = transform.position + rayCasOffset;
+        // Vector3 endPoint = startPoint + direction * sightDistance;
+        // Debug.DrawLine(startPoint, endPoint, Color.yellow);
+        // Debug.DrawLine(transform.position, transform.forward, Color.blue);
         if (Physics.Raycast(transform.position + rayCasOffset, direction, out hit, sightDistance)) {
-            if (hit.collider.gameObject.tag == "Player") {
+            if (hit.collider.gameObject.tag == "Player" && Vector3.Dot(NPCforward, direction) > -0.5) {
                 walking = false;
                 StopCoroutine("stayIdle");
                 StopCoroutine("runRoutine");
@@ -36,6 +43,11 @@ public class NPC_Ai : MonoBehaviour
                 aiAnim.ResetTrigger("idle");
                 aiAnim.SetTrigger("sprint");
                 running = true;
+
+                if (!is_scared) {
+                    aiAnim.SetTrigger("jumpscare");
+                    is_scared = true;
+                }
             }
         }
 
@@ -58,6 +70,7 @@ public class NPC_Ai : MonoBehaviour
                 aiAnim.ResetTrigger("walk");
                 aiAnim.ResetTrigger("idle");
                 Debug.Log("RunAway!");
+                is_scared = false;
                 StopCoroutine("runRoutine");
                 StartCoroutine("stayIdle");
                 running = false;
@@ -101,6 +114,7 @@ public class NPC_Ai : MonoBehaviour
     IEnumerator runRoutine() {
         runTime = Random.Range(minRunTime, maxRunTime);
         yield return new WaitForSeconds(runTime);
+        is_scared = false;
         Debug.Log("Escape!");
         walking = true;
         running = false;
