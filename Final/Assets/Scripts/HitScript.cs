@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HitScript : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class HitScript : MonoBehaviour
             my_player.animator.speed = 1.0f;
             StartCoroutine(SetBoolAfterDelay(3.0f));
             my_player.Stop_Moving();
+            StartCoroutine(SetAttackBool(3.0f));
         }
         
         if (other.CompareTag("Stone") && my_player.currentSpeed >= 5.0f) {
@@ -36,8 +38,13 @@ public class HitScript : MonoBehaviour
             my_player.animator.speed = 1.0f;
             StartCoroutine(SetBoolAfterDelay(2.0f));
             my_player.Stop_Moving();
+            StartCoroutine(SetAttackBool(3.0f));
         }
         
+        if (other.CompareTag("NPC")) {
+            Debug.Log("U caught the Player!");
+            SceneManager.LoadScene("Win_Scene");
+        }
     }
 
     IEnumerator SetBoolAfterDelay(float delayTime)
@@ -45,7 +52,12 @@ public class HitScript : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
         my_player.can_walk = true;
         my_mouse.can_mouse_move = true;
-        
+    }
+
+    IEnumerator SetAttackBool(float delayTime) {
+        my_player.Can_attack = false;
+        yield return new WaitForSeconds(delayTime);
+        my_player.Can_attack = true;
     }
 
     // Update is called once per frame

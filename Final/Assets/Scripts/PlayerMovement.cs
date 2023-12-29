@@ -15,14 +15,18 @@ public class PlayerMovement : MonoBehaviour
     private bool Is_A_Pressed = false;
     private bool Is_D_Pressed = false;
     public Animator animator;
+    public GameObject attack_hands;
 
     public bool can_walk;
     private bool Is_walking;
+    public bool Can_attack;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        Can_attack = true;
+        attack_hands.SetActive(false);
     }
 
     private void GroundMove() {
@@ -31,25 +35,25 @@ public class PlayerMovement : MonoBehaviour
         moveDirection.Normalize(); // 归一化向量
 
         if (currentSpeed == 0) {
-            currentSpeed = maxSpeed * 0.3f; // 初始速度设为最大速度的10%
+            currentSpeed = maxSpeed * 0.5f;
             return;
         }
         else if((currentSpeed += maxSpeed * 0.2f) > maxSpeed) {
             currentSpeed = maxSpeed;
             currentSpeed = Mathf.Clamp(currentSpeed, 0.0f, maxSpeed);
-            Debug.Log(currentSpeed);
             return;
         }
         else {
             currentSpeed += maxSpeed * 0.2f;
             currentSpeed = Mathf.Clamp(currentSpeed, 0.0f, maxSpeed);
-            // Debug.Log(currentSpeed);
             return;
         }
     }
 
     public void Stop_Moving() {
+        Debug.Log("Stopped");
         animator.SetBool("Walk", false);
+        animator.speed = 1.0f;
         Is_A_Pressed = false;
         Is_D_Pressed = false;
         currentSpeed = 0.0f;
@@ -57,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate() {
-        if (Mathf.Abs(currentSpeed) > 0.0f)
+        if (Mathf.Abs(currentSpeed) > 0)
         {
             animator.SetBool("Walk", true);
             if (can_walk) {
@@ -72,11 +76,12 @@ public class PlayerMovement : MonoBehaviour
 
             rb.velocity = moveDirection * currentSpeed;
 
-            if (Mathf.Abs(currentSpeed) < 0.5f)
+            if (Mathf.Abs(currentSpeed) < 2.5f)
             {
                 Stop_Moving();
             }
         }
+
     }
 
     void Update()
@@ -96,26 +101,22 @@ public class PlayerMovement : MonoBehaviour
                 GroundMove();
             }
         }
-        
-        // if (Mathf.Abs(currentSpeed) > 0.0f)
-        // {
-        //     animator.SetBool("Walk", true);
-        //     if (can_walk) {
-        //         animator.speed = Mathf.Abs(currentSpeed * 0.1f) + 0.3f;
-        //     }
-        //     // Debug.Log(currentSpeed);
-        //     // 停止按键后，逐渐减速
-        //     currentSpeed = currentSpeed * stopForceMultiplier; 
 
-        //     // 限制速度在合理范围内
-        //     currentSpeed = Mathf.Clamp(currentSpeed, 0.0f, maxSpeed);
-
-        //     rb.velocity = moveDirection * currentSpeed;
-
-        //     if (Mathf.Abs(currentSpeed) < 0.5f)
-        //     {
-        //         Stop_Moving();
-        //     }
-        // }
+        if (Input.GetMouseButton(0) && Can_attack) {
+            StartCoroutine("Attack");
+        }
     }
+
+    IEnumerator Attack() {
+        Can_attack = false;
+        animator.SetTrigger("attack");
+        Debug.Log("attack");
+        yield return new WaitForSeconds(0.3f);
+        attack_hands.SetActive(true);
+        yield return new WaitForSeconds(0.7f);
+        attack_hands.SetActive(false);
+        yield return new WaitForSeconds(0.2f);
+        Can_attack = true;
+    }
+
 }
