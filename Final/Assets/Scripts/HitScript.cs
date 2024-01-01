@@ -43,7 +43,7 @@ public class HitScript : MonoBehaviour
         
         if (other.CompareTag("NPC")) {
             Debug.Log("U caught the Player!");
-            SceneManager.LoadScene("Win_Scene");
+            ISceneManager._instance.LoadNextScene();
         }
     }
 

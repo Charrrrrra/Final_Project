@@ -119,4 +119,27 @@ public class PlayerMovement : MonoBehaviour
         Can_attack = true;
     }
 
+    private void PlayRight() {
+        AudioManager._instance.RightFoot();
+    }
+
+    private void PlayLeft() {
+        AudioManager._instance.LeftFoot();
+    }
+
+    private void PlayAttack() {
+        AudioManager._instance.Attack_NPC();
+    }
+
+    private void PlayFallBack() {
+        AudioManager._instance.Fall_Back();
+    }
+
+    private void PlayFallFront() {
+        AudioManager._instance.Fall_Front();
+    }
+
+    private void PlayScream() {
+        AudioManager._instance.MonsterScream();
+    }
 }
