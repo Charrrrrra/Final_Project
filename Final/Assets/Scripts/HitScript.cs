@@ -27,6 +27,7 @@ public class HitScript : MonoBehaviour
             my_player.animator.speed = 1.0f;
             StartCoroutine(SetBoolAfterDelay(3.0f));
             my_player.Stop_Moving();
+            my_mouse.xRotation = 0f;
             StartCoroutine(SetAttackBool(3.0f));
         }
         
@@ -38,6 +39,7 @@ public class HitScript : MonoBehaviour
             my_player.animator.speed = 1.0f;
             StartCoroutine(SetBoolAfterDelay(2.0f));
             my_player.Stop_Moving();
+            my_mouse.xRotation = 0f;
             StartCoroutine(SetAttackBool(3.0f));
         }
         
@@ -45,6 +47,7 @@ public class HitScript : MonoBehaviour
             Debug.Log("U caught the Player!");
             ISceneManager._instance.LoadNextScene();
         }
+
     }
 
     IEnumerator SetBoolAfterDelay(float delayTime)

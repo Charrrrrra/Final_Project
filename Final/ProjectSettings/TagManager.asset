@@ -7,6 +7,7 @@ TagManager:
   - Wall
   - Stone
   - NPC
+  - Death
   layers:
   - Default
   - TransparentFX
