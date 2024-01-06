@@ -54,11 +54,8 @@ public class NPC_Ai : MonoBehaviour
         if (running == true) {
             
             Vector3 playerPosition = player.position;
-            // 计算玩家到NPC的方向向量
             Vector3 directionToPlayer = playerPosition - transform.position;
-            // 反转方向向量，让NPC朝着远离玩家的方向移动
             Vector3 directionAwayFromPlayer = -directionToPlayer;
-            // 设置NPC的目的地为远离玩家的方向
             Vector3 destination = transform.position + directionAwayFromPlayer;
             ai.destination = destination;
             ai.speed = RunSpeed;

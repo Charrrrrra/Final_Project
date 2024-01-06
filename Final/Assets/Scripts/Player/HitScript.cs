@@ -7,32 +7,31 @@ public class HitScript : MonoBehaviour
 {
     public PlayerMovement my_player;
     public PlayerController my_mouse;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject wall_instruction;
+    public GameObject stone_instruction;
 
     void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Wall") && (my_player.currentSpeed > 1.0f && my_player.currentSpeed < 5.0f)) {
-            Debug.Log("You hit the wall and get hurt! The V is " + my_player.currentSpeed);
-        }
-        else if (other.CompareTag("Wall") && (my_player.currentSpeed >= 6.0f)) {
+        if (other.CompareTag("Wall") && (my_player.currentSpeed >= 6.0f)) {
             Debug.Log("You hit the wall and fall! The V is " + my_player.currentSpeed);
             my_player.can_walk = false;
             my_mouse.can_mouse_move = false;
-            my_player.animator.Play("Fallback");
+            // my_player.animator.Play("Fallback");
+            my_player.animator.SetTrigger("Fallback");
             my_player.animator.speed = 1.0f;
             StartCoroutine(SetBoolAfterDelay(3.0f));
             my_player.Stop_Moving();
             my_mouse.xRotation = 0f;
             StartCoroutine(SetAttackBool(3.0f));
+
+            if (!Instruction_bool._instance.Is_wall) {
+                StartCoroutine(SetInstruction(wall_instruction, 6f));
+                Instruction_bool._instance.Is_wall = true;
+            }
         }
         
         if (other.CompareTag("Stone") && my_player.currentSpeed >= 5.0f) {
-            my_player.animator.Play("Fallfront");
+            // my_player.animator.Play("Fallfront");
+            my_player.animator.SetTrigger("Fallfront");
             my_player.can_walk = false;
             my_mouse.can_mouse_move = false;
             Debug.Log("You fall!");
@@ -41,11 +40,11 @@ public class HitScript : MonoBehaviour
             my_player.Stop_Moving();
             my_mouse.xRotation = 0f;
             StartCoroutine(SetAttackBool(3.0f));
-        }
-        
-        if (other.CompareTag("NPC")) {
-            Debug.Log("U caught the Player!");
-            ISceneManager._instance.LoadNextScene();
+
+            if (!Instruction_bool._instance.Is_stone) {
+                StartCoroutine(SetInstruction(stone_instruction, 6f));
+                Instruction_bool._instance.Is_stone = true;
+            }
         }
 
     }
@@ -61,6 +60,13 @@ public class HitScript : MonoBehaviour
         my_player.Can_attack = false;
         yield return new WaitForSeconds(delayTime);
         my_player.Can_attack = true;
+    }
+
+    IEnumerator SetInstruction(GameObject ins, float delayTime) {
+        Debug.Log(1);
+        ins.SetActive(true);
+        yield return new WaitForSeconds(delayTime);
+        ins.SetActive(false);
     }
 
     // Update is called once per frame
