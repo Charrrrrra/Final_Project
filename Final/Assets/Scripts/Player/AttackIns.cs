@@ -19,6 +19,7 @@ public class AttackIns : MonoBehaviour
 
     IEnumerator ShowAttackInstruction(float delayTime) {
         attack_ins.SetActive(true);
+        my_player.Can_attack = true;
         yield return new WaitForSeconds(delayTime);
         attack_ins.SetActive(false);
         Is_ins_shown = true;

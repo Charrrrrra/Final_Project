@@ -45,10 +45,8 @@ public class Instruction_bool : MonoBehaviour
     }
 
     IEnumerator Show_D(float delayTime) {
-        my_player.can_walk = false;
         D_instruction.SetActive(true);
         yield return new WaitForSeconds(delayTime);
-        my_player.can_walk = true;
         D_instruction.SetActive(false);
     }
 
