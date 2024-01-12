@@ -10,6 +10,11 @@ public class HitScript : MonoBehaviour
     public GameObject wall_instruction;
     public GameObject stone_instruction;
 
+    void Start() {
+        wall_instruction = GameObject.FindWithTag("wall_ins");
+        stone_instruction = GameObject.FindWithTag("stone_ins");
+    }
+
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Wall") && (my_player.currentSpeed >= 6.0f)) {
             Debug.Log("You hit the wall and fall! The V is " + my_player.currentSpeed);

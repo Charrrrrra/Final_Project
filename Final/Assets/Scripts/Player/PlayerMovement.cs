@@ -165,9 +165,9 @@ public class PlayerMovement : MonoBehaviour
         animator.speed = 1f;
         animator.SetTrigger("attack");
         
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
         attack_hands.SetActive(true);
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.6f);
         attack_hands.SetActive(false);
         yield return new WaitForSeconds(0.2f);
         Can_attack = true;

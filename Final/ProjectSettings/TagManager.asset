@@ -8,11 +8,14 @@ TagManager:
   - Stone
   - NPC
   - Death
+  - wall_ins
+  - stone_ins
+  - Power
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - black
   - Water
   - UI
   - Player

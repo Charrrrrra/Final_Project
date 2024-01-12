@@ -18,6 +18,7 @@ public class NPC_Ai : MonoBehaviour
     public Vector3 rayCasOffset;
     public bool is_scared;
 
+
     void Start() {
         walking = true;
         randNum = Random.Range(0, destinationAmount);
@@ -56,7 +57,7 @@ public class NPC_Ai : MonoBehaviour
             Vector3 playerPosition = player.position;
             Vector3 directionToPlayer = playerPosition - transform.position;
             Vector3 directionAwayFromPlayer = -directionToPlayer;
-            Vector3 destination = transform.position + directionAwayFromPlayer;
+            Vector3 destination = transform.position + directionAwayFromPlayer * 2.5f;
             ai.destination = destination;
             ai.speed = RunSpeed;
 
@@ -66,7 +67,6 @@ public class NPC_Ai : MonoBehaviour
                 aiAnim.ResetTrigger("sprint");
                 aiAnim.ResetTrigger("walk");
                 aiAnim.ResetTrigger("idle");
-                Debug.Log("RunAway!");
                 is_scared = false;
                 StopCoroutine("runRoutine");
                 StartCoroutine("stayIdle");
@@ -112,7 +112,6 @@ public class NPC_Ai : MonoBehaviour
         runTime = Random.Range(minRunTime, maxRunTime);
         yield return new WaitForSeconds(runTime);
         is_scared = false;
-        Debug.Log("Escape!");
         walking = true;
         running = false;
         randNum = Random.Range(0, destinationAmount);
