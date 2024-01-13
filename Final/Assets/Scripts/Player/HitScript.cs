@@ -7,12 +7,9 @@ public class HitScript : MonoBehaviour
 {
     public PlayerMovement my_player;
     public PlayerController my_mouse;
-    public GameObject wall_instruction;
-    public GameObject stone_instruction;
 
     void Start() {
-        wall_instruction = GameObject.FindWithTag("wall_ins");
-        stone_instruction = GameObject.FindWithTag("stone_ins");
+        
     }
 
     void OnTriggerEnter(Collider other) {
@@ -28,10 +25,6 @@ public class HitScript : MonoBehaviour
             my_mouse.xRotation = 0f;
             StartCoroutine(SetAttackBool(3.0f));
 
-            if (!Instruction_bool._instance.Is_wall) {
-                StartCoroutine(SetInstruction(wall_instruction, 6f));
-                Instruction_bool._instance.Is_wall = true;
-            }
         }
         
         if (other.CompareTag("Stone") && my_player.currentSpeed >= 5.0f) {
@@ -46,10 +39,6 @@ public class HitScript : MonoBehaviour
             my_mouse.xRotation = 0f;
             StartCoroutine(SetAttackBool(3.0f));
 
-            if (!Instruction_bool._instance.Is_stone) {
-                StartCoroutine(SetInstruction(stone_instruction, 6f));
-                Instruction_bool._instance.Is_stone = true;
-            }
         }
 
     }

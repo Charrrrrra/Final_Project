@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource fall_back_sound;
     public AudioSource fall_front_sound;
     public AudioSource monster_scream_sound;
+    public AudioSource sound_effect;
 
     void Awake() {
         if(_instance == null)
@@ -43,5 +44,9 @@ public class AudioManager : MonoBehaviour
 
     public void MonsterScream() {
         monster_scream_sound.Play();
+    }
+
+    public void Collect_Power() {
+        sound_effect.Play();
     }
 }

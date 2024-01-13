@@ -11,7 +11,7 @@ public class Alert : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
-            if (my_player.currentSpeed > 12f) {
+            if (my_player.currentSpeed > 11.5f) {
                 Is_runing = true;
                 Debug.Log("runing");
                 StartCoroutine("NPC_Scared", 0.8f);

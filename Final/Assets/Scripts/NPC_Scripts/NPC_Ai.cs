@@ -18,6 +18,10 @@ public class NPC_Ai : MonoBehaviour
     public Vector3 rayCasOffset;
     public bool is_scared;
 
+    public AudioSource NPC_walk_01;
+    public AudioSource NPC_walk_02;
+    public AudioSource scream;
+
 
     void Start() {
         walking = true;
@@ -71,6 +75,8 @@ public class NPC_Ai : MonoBehaviour
                 StopCoroutine("runRoutine");
                 StartCoroutine("stayIdle");
                 running = false;
+                randNum = Random.Range(0, destinationAmount);
+                currentDest = destinations[randNum];
             }
         }
 
@@ -121,4 +127,13 @@ public class NPC_Ai : MonoBehaviour
         aiAnim.SetTrigger("walk");
     }
 
+    private void Walk01() {
+        NPC_walk_01.Play();
+    }
+    private void Walk02() {
+        NPC_walk_02.Play();
+    }
+    private void NPCScream() {
+        scream.Play();
+    }
 }

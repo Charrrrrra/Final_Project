@@ -13,7 +13,7 @@ public class Attack_Cube : MonoBehaviour
 
         if (other.CompareTag("Power")) {
             Debug.Log("U got power!");
-            cam.sight_time += 3f;
+            cam.sight_time += 2f;
         }
     }
 }

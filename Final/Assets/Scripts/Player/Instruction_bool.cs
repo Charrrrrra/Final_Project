@@ -7,8 +7,6 @@ public class Instruction_bool : MonoBehaviour
     public PlayerMovement my_player;
     public PlayerController my_mouse;
     public static Instruction_bool _instance;
-    public bool Is_wall = false;
-    public bool Is_stone = false;
     private bool Is_D_Shown = false;
 
 
